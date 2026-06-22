@@ -1,6 +1,16 @@
+import os
 from fastapi import FastAPI
+from app.database import engine, Base
+from app.models.user import User
+from app.models.course import Course
+from app.models.enrollment import Enrollment
 from app.routers import auth, users, courses, enrollments
 
+try: 
+    Base.metadata.create_all(bind=engine)
+    print('Database tables created successfully')
+except Exception as e:
+    print(f"Databse connection error: {e}")
 
 app = FastAPI(
     title="Course Enrollment Platform",
