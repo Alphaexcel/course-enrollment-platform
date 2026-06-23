@@ -1,4 +1,4 @@
-@"
+
 import os
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -34,4 +34,4 @@ app.include_router(enrollments.router)
 @app.get("/", tags=["Health"])
 def root():
     return {"message": "Course Enrollment Platform API is running"}
-"@ | Set-Content app\main.py
+
