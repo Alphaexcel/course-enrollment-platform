@@ -1,4 +1,5 @@
 import os
+import traceback
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from app.database import engine, Base
