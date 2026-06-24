@@ -20,8 +20,9 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
 
 @router.post("/token", response_model=Token)
 def token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    username: str = Form(...),
+    password: str = Form(...),
 ):
     login_data = UserLogin(email=form_data.username, password=form_data.password)
     return login_user(db, login_data)
