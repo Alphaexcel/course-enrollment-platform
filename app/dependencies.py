@@ -1,19 +1,16 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services.auth_service import decode_access_token
 from app.repository.user_repo import get_user_by_email
 from app.models.user import User, UserRole
 
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
-
-
+security = HTTPBearer()
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ) -> User:
     credentials_exception = HTTPException(
@@ -21,6 +18,7 @@ def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    token = credentials.credentials
     token_data = decode_access_token(token)
     if token_data is None:
         raise credentials_exception
@@ -32,8 +30,6 @@ def get_current_user(
     return user
 
 
-
-
 def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role != UserRole.admin:
         raise HTTPException(
@@ -43,8 +39,6 @@ def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
     return current_user
 
 
-
-
 def get_current_student(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role != UserRole.student:
         raise HTTPException(
@@ -52,5 +46,6 @@ def get_current_student(current_user: User = Depends(get_current_user)) -> User:
             detail="Student access required"
         )
     return current_user
+
 
 
