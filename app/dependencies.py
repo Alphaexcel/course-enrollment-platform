@@ -7,7 +7,7 @@ from app.repository.user_repo import get_user_by_email
 from app.models.user import User, UserRole
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
 
