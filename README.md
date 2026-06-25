@@ -41,7 +41,7 @@ alembic upgrade head
 ## Running the Application
 uvicorn app.main:app --reload
 
-API docs available at: http://localhost:8000/docs
+API docs available at: https://course-enrollment-platform-8e9y.onrender.com/docs
 
 ## Runing Tests
 pytest test/ -v
